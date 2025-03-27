@@ -1,7 +1,7 @@
 const canvas = document.getElementById ('jogocanvas')
 const ctx = canvas.getContext('2d')
 let gravidade = 0.5
-gameOver =  false
+gameOver = false
 reset = false
 pontuacao = true
 
@@ -19,15 +19,17 @@ document.addEventListener ('click', (evento) => {
     }
 })
 
-const personagem = {
+let personagem = {
     x:100,
     y:canvas.height-50,
     largura:50,
     altura:50,
     velocidade_y:0,
-    pulando: false
+    pulando: false,
+    velocidade_x:0,
+    imagem: new Image()
 }
-
+personagem.imagem.src= './personagem.png'
 let obstaculo = {
     x: canvas.width -50,
     y: canvas.height-100,
@@ -38,16 +40,16 @@ let obstaculo = {
 }
 
 function desenharpersonagem (){
-    ctx.fillStyle = 'black'
-    ctx.fillRect(
+    ctx.drawImage(personagem.imagem,
         personagem.x,
         personagem.y,
         personagem.largura,
-        personagem.altura)
+        personagem.altura )
+
 }
 
 function atualizarpersonagem(){
-   if (personagem.pulando){
+   if (personagem.pulando == true){
     personagem.y -= personagem.velocidade_y
     personagem.velocidade_y -= gravidade
     if (personagem.y >= canvas.height -50){
@@ -78,7 +80,6 @@ function desenharobstaculo (){
     function placar(){
         pontuacao += 9
         
-
         ctx.fillStyle = 'black'
             ctx.font = '20px Arial'
             ctx.fillText ('score = ' + pontuacao, 20,50)
@@ -107,7 +108,7 @@ function desenharobstaculo (){
     }
 
 function loop (){
-    if (gameOver == false){
+    if (gameOver==false){
     ctx.clearRect(0,0,canvas.width,canvas.height)
     desenharpersonagem()
     atualizarpersonagem()
